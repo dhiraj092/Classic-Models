@@ -1,26 +1,24 @@
-## breakdown of each customer and their sales, but include a money owed column as I would like to see if any customers have gone over their credit limit. 
-with 
-cte_sales as 
+WITH 
+cte_sales AS 
 (
-SELECT 
-t1.orderDate,
-t1.orderNumber,
-t3.customerNumber,
-t3.customerName,
-t2.productCode,
-t3.creditLimit, 
-quantityOrdered * priceEach as sales_value
+SELECT t1.orderDate,
+	t1.orderNumber,
+	t3.customerNumber,
+	t3.customerName,
+	t2.productCode,
+	t3.creditLimit, 
+	quantityOrdered * priceEach AS sales_value
 FROM orders t1 
-inner join orderdetails t2
-on t1.orderNumber = t2.orderNumber
-inner join customers t3
-on t3.customerNumber = t1.customerNumber
+INNER JOIN orderdetails t2
+ON t1.orderNumber = t2.orderNumber
+INNER JOIN customers t3
+ON t3.customerNumber = t1.customerNumber
 ),
 
 running_total_sales_cte as 
 (
-	Select *, lead(orderdate) over (partition by customernumber order by orderdate) as next_order_date 
-	from 
+SELECT *, lead(orderdate) over (partition BY customernumber ORDER BY orderdate) AS next_order_date 
+FROM 
 	(
 	SELECT 
 	orderDate,
@@ -28,9 +26,9 @@ running_total_sales_cte as
 	customerNumber,
 	customerName,
 	creditLimit,
-	sum(sales_value) as sales_value
+	sum(sales_value) AS sales_value
 	FROM cte_sales
-	group by 
+	GROUP BY 
 	orderDate,
 	orderNumber,
 	customerNumber,
@@ -40,22 +38,22 @@ running_total_sales_cte as
 )
 ,
 
-payments_cte as 
+payments_cte AS
 (
-Select *
-from payments
+SELECT *
+FROM payments
 ),
 
-main_cte as 
+main_cte AS 
 (
-select t1.*,
-sum(sales_value) over (partition by t1.customernumber order by orderdate) as running_total_sales,
-sum(amount) over (partition by t1.customernumber order by orderdate) as running_total_payments 
-from running_total_sales_cte t1
-left join payments_cte t2
-on t1.customernumber = t2.customernumber and t2.paymentdate between t1.orderdate and case when t1.next_order_date is null then current_date else next_order_date end
+SELECT t1.*,
+sum(sales_value) over (partition BY t1.customernumber ORDER BY orderdate) AS running_total_sales,
+sum(amount) over (partition BY t1.customernumber ORDER BY orderdate) AS running_total_payments 
+FROM running_total_sales_cte t1
+LEFT JOIN payments_cte t2
+ON t1.customernumber = t2.customernumber AND t2.paymentdate BETWEEN t1.orderdate AND CASE WHEN t1.next_order_date IS NULL THEN current_date else next_order_date end
 )
 
-SELECT *, running_total_sales- running_total_payments as money_owed,
-creditlimit - (running_total_sales- running_total_payments) as difference
-from main_cte
+SELECT *, running_total_sales- running_total_payments AS money_owed,
+creditlimit - (running_total_sales- running_total_payments) AS difference
+FROM main_cte
