@@ -1,5 +1,15 @@
-SELECT t1.orderDate, t1.orderNumber, quantityOrdered, priceEach, productName, productLine, buyPrice, city, country
-FROM classicmodels.orders t1
+SELECT 
+  t1.orderDate, 
+  t1.orderNumber, 
+  quantityOrdered, 
+  priceEach, 
+  productName, 
+  productLine, 
+  buyPrice, 
+  city, 
+  country
+FROM 
+  classicmodels.orders t1
 inner join orderdetails t2 
 on t1.orderNumber = t2.orderNumber
 inner join products t3
