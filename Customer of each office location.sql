@@ -22,8 +22,7 @@ on t3.salesRepEmployeeNumber = t5.employeeNumber
 inner join offices t6
 on t6.officeCode = t5.officeCode
 ) 
-select 
-ordernumber, 
+select ordernumber, 
 customer_city, 
 customer_country, 
 productline, 
