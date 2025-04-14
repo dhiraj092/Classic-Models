@@ -1,7 +1,6 @@
 with prod_sales as 
 (
-SELECT 
-  orderNumber, 
+SELECT orderNumber, 
   t1.productCode, 
   productLine
 FROM orderdetails t1
