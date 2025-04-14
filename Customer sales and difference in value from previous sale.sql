@@ -1,36 +1,36 @@
-with main_cte as 
+WITH main_cte AS 
 (
 Select ordernumber, 
   orderdate, 
   customernumber, 
-  sum(sales_value) as sales_value
+  sum(sales_value) AS sales_value
 FROM 
   
 (SELECT t1.orderNumber, 
   orderDate, 
   customerNumber, 
   productCode, 
-  quantityOrdered * priceEach as sales_value
+  quantityOrdered * priceEach AS sales_value
 FROM orders t1
-inner join orderdetails t2
-on t1.orderNumber = t2.orderNumber) main 
+INNER JOIN orderdetails t2
+ON t1.orderNumber = t2.orderNumber) main 
 
-group by ordernumber, 
+GROUP BY ordernumber, 
   orderdate, 
   customernumber
 ),
 
-sales_query as 
+sales_query AS 
 (
-select t1.*, 
+SELECT t1.*, 
   customerName, 
-  row_number() over (partition by customerName order by orderdate) as purchase_number,
-  lag(sales_value) over (partition by customerName order by orderdate) prev_sales_value
-from main_cte t1
-inner join customers t2
-on t1.customernumber = t2.customernumber
+  row_number() over (partition BY customerName ORDER BY orderdate) AS purchase_number,
+  lag(sales_value) over (partition BY customerName ORDER BY orderdate) prev_sales_value
+FROM main_cte t1
+INNER JOIN customers t2
+ON t1.customernumber = t2.customernumber
 )
-select *, 
-  sales_value-prev_sales_value as purchase_value_change 
-from sales_query
-where prev_sales_value is not null 
+SELECT *, 
+  sales_value-prev_sales_value AS purchase_value_change 
+FROM sales_query
+WHERE prev_sales_value IS NOT NULL 
