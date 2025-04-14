@@ -9,28 +9,28 @@ SELECT t1.orderNumber,
   t3.country AS customer_country, 
   t4.productLine,
   t6.city AS office_city,
-  t6.country as office_country  
+  t6.country AS office_country  
 FROM orders t1
-inner join orderdetails t2
-on t1.orderNumber = t2.orderNumber
-inner join customers t3
-on t1.customerNumber = t3.customerNumber 
-inner join products t4
-on t4.productCode = t2.productCode
-inner join employees t5
-on t3.salesRepEmployeeNumber = t5.employeeNumber
-inner join offices t6
-on t6.officeCode = t5.officeCode
+INNER JOIN orderdetails t2
+ON t1.orderNumber = t2.orderNumber
+INNER JOIN customers t3
+ON t1.customerNumber = t3.customerNumber 
+INNER JOIN products t4
+ON t4.productCode = t2.productCode
+INNER JOIN employees t5
+ON t3.salesRepEmployeeNumber = t5.employeeNumber
+INNER JOIN offices t6
+ON t6.officeCode = t5.officeCode
 ) 
-select ordernumber, 
+SELECT ordernumber, 
   customer_city, 
   customer_country, 
   productline, 
   office_city, 
   office_country,
-  sum(sales_value) as sales_value
-from main_cte
-group by 
+  sum(sales_value) AS sales_value
+FROM main_cte
+GROUP BY 
   ordernumber, 
   customer_city, 
   customer_country, 
