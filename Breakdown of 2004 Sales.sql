@@ -8,11 +8,11 @@ SELECT t1.orderDate,
   city, 
   country
 FROM classicmodels.orders t1
-inner join orderdetails t2 
-on t1.orderNumber = t2.orderNumber
-inner join products t3
-on t2.productCode = t3.productCode
-inner join customers t4
-on t1.customerNumber = t4.customerNumber
-where year(orderDate) = 2004
+INNER JOIN orderdetails t2 
+ON t1.orderNumber = t2.orderNumber
+INNER JOIN products t3
+ON t2.productCode = t3.productCode
+INNER JOIN customers t4
+ON t1.customerNumber = t4.customerNumber
+WHERE year(orderDate) = 2004
 
