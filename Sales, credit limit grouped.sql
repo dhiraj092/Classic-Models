@@ -1,4 +1,4 @@
-with sales as 
+WITH sales AS 
 (
 SELECT t1.orderNumber, 
  t1.customerNumber, 
@@ -7,24 +7,24 @@ SELECT t1.orderNumber,
  priceEach, 
  priceEach * quantityOrdered as sales_value, 
  creditLimit
-from ORDERS t1
-inner join orderdetails t2
-on t1.orderNumber = t2.orderNumber
-inner join customers t3
-on t1.customerNumber = t3.customerNumber
+FROM ORDERS t1
+INNER JOIN orderdetails t2
+ON t1.orderNumber = t2.orderNumber
+INNER JOIN customers t3
+ON t1.customerNumber = t3.customerNumber
 )
 
-select ordernumber, 
+SELECT ordernumber, 
  customerNumber, 
-case when creditlimit < 75000 then 'a: less than $75k'
-when creditlimit between 75000 and 100000 then 'b: $75k - $100k'
-when creditlimit between 100000 and 150000 then 'c: $100k - $150K'
-when creditlimit > 150000 then 'd: over $150k'
-else 'Other'
-end as creditlimit_group,
+CASE WHEN creditlimit < 75000 THEN 'a: less than $75k'
+WHEN creditlimit BETWEEN 75000 AND 100000 THEN 'b: $75k - $100k'
+WHEN creditlimit BETWEEN 100000 AND 150000 THEN 'c: $100k - $150K'
+WHEN creditlimit > 150000 THEN 'd: over $150k'
+ELSE 'Other'
+END AS creditlimit_group,
  
-sum(sales_value) as sales_value
-from sales
-group by ordernumber, 
+sum(sales_value) AS sales_value
+FROM sales
+GROUP BY ordernumber, 
  customerNumber, 
  creditlimit_group
