@@ -1,5 +1,4 @@
-SELECT 
-  t1.orderDate, 
+SELECT t1.orderDate, 
   t1.orderNumber, 
   quantityOrdered, 
   priceEach, 
