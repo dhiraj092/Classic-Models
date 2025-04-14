@@ -8,8 +8,7 @@ SELECT
   buyPrice, 
   city, 
   country
-FROM 
-  classicmodels.orders t1
+FROM classicmodels.orders t1
 inner join orderdetails t2 
 on t1.orderNumber = t2.orderNumber
 inner join products t3
