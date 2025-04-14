@@ -1,4 +1,3 @@
-## View of where the customers of each office are located.
 with main_cte as 
 (
 SELECT t1.orderNumber,
