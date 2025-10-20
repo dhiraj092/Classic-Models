@@ -18,6 +18,7 @@ Visualize sales and payment trends by region, product line, and customer type.
 Strengthen financial decision-making through data insights and transparent reporting.
 
 **Tools and Methodology**
+
 ***1. SQL (MySQL)***
 
 SQL served as the foundation for data extraction and modeling.
